@@ -1,6 +1,10 @@
 # Alpine meteor
 
-Utilizes [Alpine Linux](https://alpinelinux.org/) to provide a [Docker](https://www.docker.com/) image just tiny enough to run a Meteor-based application.
+Utilizes [Alpine Linux](https://alpinelinux.org/) to provide a [Docker](https://www.docker.com/) image just tiny enough to ~~run a pre-built~~ develop, build, and test a Meteor-based application. 
+Forked from:  
+[nonyy/alpine-meteor](https://github.com/nonyy/alpine-meteor)
+
+Inspired by: [golden-garage/meteor-dev](https://github.com/golden-garage/meteor-dev/blob/master/Dockerfile)
 
 ## Tags
 
@@ -12,7 +16,7 @@ Tag is just a Meteor version that the image was prepared for. If your applicatio
 
 ## What's included?
 
-This is an ultra minimal image. Only packages essential to build a Meteor application image are added. Bash is not included (only POSIX-compatible shell is installed). PhantomJS or other packages (and their install scripts) that you may find useful are not included either.
+This was an ultra minimal image. Only packages essential to build a Meteor application image are added. Bash is not included (only POSIX-compatible shell is installed). PhantomJS or other packages (and their install scripts) that you may find useful are not included either.
 
 ## Usage
 

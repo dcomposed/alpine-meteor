@@ -1,0 +1,36 @@
+version: '2.1'
+
+services:
+  alpeor:
+    image: alpeor:dev
+    container_name: ${CONAME:-alpeor-app}
+    restart: always
+    # networks:
+    #   - reverse-proxy-network
+    ports:
+      - 3333:${APPPORT:-3333}
+      - 8888:80
+    volumes:
+      - ./app:/app
+      - ./db:/app/.meteor/local/appdb
+      #- ./root-meteor:/root/.meteor
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+      - ONBUILDSH=${ONBUILDSH:-du -hd 1}
+      - APPPORT=${APPPORT:-3333}
+    environment:
+      #MONGO_URL: mongodb://wekan-dev-db:27017/wekan
+      ROOT_URL: "${PROTOCOL:-http://}${WEKANHOSTNAME:-localhost}:${APPPORT:-3333}"
+
+      HTTPS_METHOD: ${HTTPS_METHOD:-redirect}
+      LETSENCRYPT_HOST: ${WEKANHOSTNAME:-localhost}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-ssl@$WEKANHOSTNAME}
+      VIRTUAL_HOST: ${WEKANHOSTNAME:-localhost}
+      VIRTUAL_PORT: ${APPPORT:-3333}
+# networks:
+#   reverse-proxy-network:
+#     external:
+#       name: ${REVPROXYNET:-nginx-proxy_1}
+#./db:.meteor/local/db

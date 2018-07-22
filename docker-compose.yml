@@ -1,6 +1,29 @@
 version: '2.1'
 
 services:
+   ftp:
+    # optionally replace username/repo:tag with your name and image details
+    image: stilliard/pure-ftpd:latest
+    container_name: booker-ftp
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    environment:
+      PUBLICHOST: ftp.booker.tamera.org
+      FTP_USER_NAME: "deployer"
+      FTP_USER_PASS: ${FTP_USER_PASS:-foobarqwe}
+      FTP_USER_HOME: "/srv/app"
+      FTP_USER_UID: 33
+      FTP_USER_GID: 33
+    volumes:
+      - ./app:/srv/app
+      - ./ftp:/etc/ssl/private
+    ports:
+      - target: 21
+        published: 21
+        protocol: tcp
+        mode: host
   alpeor:
     image: alpeor:dev
     container_name: ${CONAME:-alpeor-app}
@@ -22,12 +45,12 @@ services:
       - APPPORT=${APPPORT:-3333}
     environment:
       #MONGO_URL: mongodb://wekan-dev-db:27017/wekan
-      ROOT_URL: "${PROTOCOL:-http://}${WEKANHOSTNAME:-localhost}:${APPPORT:-3333}"
+      ROOT_URL: "${PROTOCOL:-http://}${HOSTNAME:-localhost}:${APPPORT:-3333}"
 
       HTTPS_METHOD: ${HTTPS_METHOD:-redirect}
-      LETSENCRYPT_HOST: ${WEKANHOSTNAME:-localhost}
-      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-ssl@$WEKANHOSTNAME}
-      VIRTUAL_HOST: ${WEKANHOSTNAME:-localhost}
+      LETSENCRYPT_HOST: ${HOSTNAME:-localhost}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL:-ssl@$HOSTNAME}
+      VIRTUAL_HOST: ${HOSTNAME:-localhost}
       VIRTUAL_PORT: ${APPPORT:-3333}
 # networks:
 #   reverse-proxy-network:

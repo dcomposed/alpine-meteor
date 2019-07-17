@@ -13,7 +13,8 @@ WORKDIR /
 RUN apk add --update --no-cache  ${BUILD_PACKAGES}
 RUN export tar='bsdtar'
 # Custom built version of mongodump (bc. alpine doesn't have v4)
-COPY ./mongodump /usr/bin/mongodump
+ADD https://raw.githubusercontent.com/dcomposed/mongo-tools-binary-alpine/master/mongodump /usr/bin/mongodump
+RUN chmod +rx /usr/bin/mongodump
 
 RUN curl https://install.meteor.com/ | sh
 RUN curl -fL https://raw.githubusercontent.com/orctom/alpine-glibc-packages/master/usr/lib/libstdc++.so.6.0.21 -o /usr/lib/libstdc++.so.6
